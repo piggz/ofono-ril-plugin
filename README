@@ -1,0 +1,5 @@
+Legacy plugin for integrating ofono with Android adaptations that
+support RIL sockets.
+
+RIL sockets disappeared in Android 8 and have been replaced with
+IRadio family of binder interfaces.
