@@ -21,9 +21,17 @@ BuildRequires:  pkgconfig(libglibutil) >= %{libglibutil_version}
 BuildRequires:  pkgconfig(libmce-glib) >= %{libmce_version}
 
 %define plugin_dir %{_libdir}/ofono/plugins
+%define config_dir /etc/ofono/
 
 %description
 This package contains ofono plugin which suppors legacy RIL sockets
+
+%package -n ofono-configs-mer
+Summary:    Package to provide default configs for ofono
+Provides:   ofono-configs
+
+%description -n ofono-configs-mer
+This package provides default configs for ofono
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -37,8 +45,15 @@ make test
 %install
 rm -rf %{buildroot}
 make LIBDIR=%{_libdir} DESTDIR=%{buildroot} PLUGINDIR=%{plugin_dir} install
+mkdir -p %{buildroot}%{config_dir}
+install -m 644 ril_subscription.conf %{buildroot}%{config_dir}
 
 %files
 %dir %{plugin_dir}
 %defattr(-,root,root,-)
 %{plugin_dir}/rilplugin.so
+
+%files -n ofono-configs-mer
+%dir %{config_dir}
+%defattr(-,root,root,-)
+%config %{config_dir}/ril_subscription.conf
