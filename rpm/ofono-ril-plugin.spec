@@ -1,5 +1,5 @@
 Name: ofono-ril-plugin
-Version: 1.0.1
+Version: 1.0.2
 Release: 1
 Summary: Ofono legacy RIL plugin
 License: GPLv2
@@ -15,10 +15,12 @@ Requires: ofono >= 1.24+git4
 Requires: libgrilio >= %{libgrilio_version}
 Requires: libglibutil >= %{libglibutil_version}
 Requires:   libmce-glib >= %{libmce_version}
+
+BuildRequires: pkgconfig
 BuildRequires: ofono-devel >= 1.24+git2
 BuildRequires: pkgconfig(libgrilio) >= %{libgrilio_version}
-BuildRequires:  pkgconfig(libglibutil) >= %{libglibutil_version}
-BuildRequires:  pkgconfig(libmce-glib) >= %{libmce_version}
+BuildRequires: pkgconfig(libglibutil) >= %{libglibutil_version}
+BuildRequires: pkgconfig(libmce-glib) >= %{libmce_version}
 
 %define plugin_dir %{_libdir}/ofono/plugins
 %define config_dir /etc/ofono/
