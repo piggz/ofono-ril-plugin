@@ -1,4 +1,5 @@
 Name: ofono-ril-plugin
+
 Version: 1.0.2
 Release: 1
 Summary: Ofono legacy RIL plugin
@@ -14,13 +15,17 @@ Source: %{name}-%{version}.tar.bz2
 Requires: ofono >= 1.24+git4
 Requires: libgrilio >= %{libgrilio_version}
 Requires: libglibutil >= %{libglibutil_version}
-Requires:   libmce-glib >= %{libmce_version}
+Requires: libmce-glib >= %{libmce_version}
 
 BuildRequires: pkgconfig
 BuildRequires: ofono-devel >= 1.24+git2
 BuildRequires: pkgconfig(libgrilio) >= %{libgrilio_version}
 BuildRequires: pkgconfig(libglibutil) >= %{libglibutil_version}
 BuildRequires: pkgconfig(libmce-glib) >= %{libmce_version}
+
+# license macro requires rpm >= 4.11
+BuildRequires: pkgconfig(rpm)
+%define license_support %(pkg-config --exists 'rpm >= 4.11'; echo $?)
 
 %define plugin_dir %{_libdir}/ofono/plugins
 %define config_dir /etc/ofono/
@@ -54,6 +59,9 @@ install -m 644 ril_subscription.conf %{buildroot}%{config_dir}
 %dir %{plugin_dir}
 %defattr(-,root,root,-)
 %{plugin_dir}/rilplugin.so
+%if %{license_support} == 0
+%license LICENSE
+%endif
 
 %files -n ofono-configs-mer
 %dir %{config_dir}
