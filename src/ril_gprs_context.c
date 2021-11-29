@@ -34,6 +34,7 @@ struct ril_gprs_context_call {
 	struct ril_data_request *req;
 	ofono_gprs_context_cb_t cb;
 	gpointer data;
+	unsigned int ctx_cid;
 };
 
 struct ril_gprs_context {
@@ -453,6 +454,7 @@ static void ril_gprs_context_activate_primary_cb(struct ril_data *data,
 		ofono_info("setting up data call");
 
 		GASSERT(!gcd->calls_changed_id);
+		gcd->active_ctx_cid = gcd->activate.ctx_cid;
 		ril_data_remove_handler(gcd->data, gcd->calls_changed_id);
 		gcd->calls_changed_id =
 			ril_data_add_calls_changed_handler(gcd->data,
@@ -507,9 +509,9 @@ static void ril_gprs_context_activate_primary(struct ofono_gprs_context *gc,
 	GASSERT(!gcd->activate.req);
 	GASSERT(ctx->cid != CTX_ID_NONE);
 
-	gcd->active_ctx_cid = ctx->cid;
 	gcd->activate.cb = cb;
 	gcd->activate.data = data;
+	gcd->activate.ctx_cid = ctx->cid;
 	gcd->activate.req = ril_data_call_setup(gcd->data, ctx,
 				ofono_gprs_context_get_assigned_type(gc),
 				ril_gprs_context_activate_primary_cb, gcd);
