@@ -131,7 +131,7 @@ static GSList *ril_voicecall_parse_clcc(const void *data, guint len)
 	grilio_parser_init(&rilp, data, len);
 
 	/* Number of RIL_Call structs */
-	
+
 	grilio_parser_get_int32(&rilp, &num);
 	for (i = 0; i < num; i++) {
 		struct ofono_call *call = g_new(struct ofono_call, 1);
@@ -154,7 +154,11 @@ static GSList *ril_voicecall_parse_clcc(const void *data, guint len)
 			OFONO_CALL_DIRECTION_MOBILE_ORIGINATED);
 
 		grilio_parser_get_int32(&rilp, NULL); /* als */
-		grilio_parser_get_int32(&rilp, &call->type); /* isVoice */
+
+		tmp = 0;
+		grilio_parser_get_int32(&rilp, &tmp); /* isVoice */
+		call->type = tmp;
+
 		grilio_parser_get_int32(&rilp, NULL); /* isVoicePrivacy */
 		number = grilio_parser_get_utf8(&rilp);
 		if (number) {
