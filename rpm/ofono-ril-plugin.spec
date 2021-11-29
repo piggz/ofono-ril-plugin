@@ -27,7 +27,7 @@ BuildRequires: pkgconfig(libmce-glib) >= %{libmce_version}
 BuildRequires: pkgconfig(rpm)
 %define license_support %(pkg-config --exists 'rpm >= 4.11'; echo $?)
 
-%define plugin_dir %{_libdir}/ofono/plugins
+%define plugin_dir %(pkg-config ofono --variable=plugindir)
 %define config_dir /etc/ofono/
 
 %description
@@ -51,7 +51,7 @@ make test
 
 %install
 rm -rf %{buildroot}
-make LIBDIR=%{_libdir} DESTDIR=%{buildroot} PLUGINDIR=%{plugin_dir} install
+make LIBDIR=%{_libdir} DESTDIR=%{buildroot} install
 mkdir -p %{buildroot}%{config_dir}
 install -m 644 ril_subscription.conf %{buildroot}%{config_dir}
 

@@ -219,7 +219,7 @@ $(COVERAGE_LIB): $(COVERAGE_OBJS)
 # Install
 #
 
-PLUGINDIR ?= usr/lib/ofono/plugins
+PLUGINDIR ?= $$(pkg-config ofono --variable=plugindir)
 ABS_PLUGINDIR := $(shell echo /$(PLUGINDIR) | sed -r 's|/+|/|g')
 
 INSTALL = install
