@@ -26,6 +26,7 @@
 #include "ril_log.h"
 
 #include <ofono/message-waiting.h>
+#include <ofono/phonebook.h>
 #include <ofono/cell-info.h>
 #include <ofono/sim-auth.h>
 #include <ofono/watch.h>
