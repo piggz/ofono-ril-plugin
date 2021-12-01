@@ -2234,7 +2234,6 @@ static guint ril_plugin_slot_driver_start(RilPlugin *plugin)
 	ofono_radio_settings_driver_register(&ril_radio_settings_driver);
 	ofono_gprs_driver_register(&ril_gprs_driver);
 	ofono_gprs_context_driver_register(&ril_gprs_context_driver);
-	ofono_phonebook_driver_register(&ril_phonebook_driver);
 	ofono_ussd_driver_register(&ril_ussd_driver);
 	ofono_cbs_driver_register(&ril_cbs_driver);
 	ofono_stk_driver_register(&ril_stk_driver);
@@ -2409,7 +2408,6 @@ static void ril_plugin_exit(void)
 	ofono_radio_settings_driver_unregister(&ril_radio_settings_driver);
 	ofono_gprs_driver_unregister(&ril_gprs_driver);
 	ofono_gprs_context_driver_unregister(&ril_gprs_context_driver);
-	ofono_phonebook_driver_unregister(&ril_phonebook_driver);
 	ofono_ussd_driver_unregister(&ril_ussd_driver);
 	ofono_cbs_driver_unregister(&ril_cbs_driver);
 	ofono_stk_driver_unregister(&ril_stk_driver);
