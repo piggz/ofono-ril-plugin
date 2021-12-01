@@ -59,7 +59,6 @@ SRC = \
   ril_netreg.c \
   ril_network.c \
   ril_oem_raw.c \
-  ril_phonebook.c \
   ril_plugin.c \
   ril_radio.c \
   ril_radio_caps.c \
