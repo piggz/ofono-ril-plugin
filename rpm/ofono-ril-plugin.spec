@@ -7,19 +7,18 @@ License: GPLv2
 URL: https://github.com/mer-hybris/ofono-ril-plugin
 Source: %{name}-%{version}.tar.bz2
 
+%define ofono_version 1.25+git7
 %define libgrilio_version 1.0.35
 %define libglibutil_version 1.0.49
 %define libmce_version 1.0.6
 
-# API appeared in ofono 1.24+git2, built-in plugin was removed in 1.24+git4
-# Generic phonebook plugin appeared in 1.25+git6
-Requires: ofono >= 1.25+git6
+Requires: ofono >= %{ofono_version}
 Requires: libgrilio >= %{libgrilio_version}
 Requires: libglibutil >= %{libglibutil_version}
 Requires: libmce-glib >= %{libmce_version}
 
 BuildRequires: pkgconfig
-BuildRequires: ofono-devel >= 1.24+git2
+BuildRequires: ofono-devel >= %{ofono_version}
 BuildRequires: pkgconfig(libgrilio) >= %{libgrilio_version}
 BuildRequires: pkgconfig(libglibutil) >= %{libglibutil_version}
 BuildRequires: pkgconfig(libmce-glib) >= %{libmce_version}

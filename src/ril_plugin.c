@@ -1068,7 +1068,7 @@ static void ril_plugin_slot_connected(RilSlot *slot)
 
 	GASSERT(!slot->network);
 	slot->network = ril_network_new(slot->path, slot->io, log_prefix,
-			slot->radio, slot->sim_card, slot->sim_settings, 
+			slot->radio, slot->sim_card, slot->sim_settings,
 			&slot->config, slot->vendor);
 
 	GASSERT(!slot->data);
@@ -1096,7 +1096,7 @@ static void ril_plugin_slot_connected(RilSlot *slot)
 	GASSERT(!slot->devmon_io);
 	if (slot->devmon) {
 		slot->devmon_io = ril_devmon_start_io(slot->devmon,
-						slot->io, slot->cell_info);
+						slot->io, slot->handle);
 	}
 
 	ril_plugin_startup_check(slot);
@@ -1622,7 +1622,7 @@ static RilSlot *ril_plugin_parse_config_group(GKeyFile *file,
 		}
 		g_strfreev(strv);
 	}
-	
+
 	/* lteNetworkMode */
 	if (ofono_conf_get_integer(file, group, RILCONF_LTE_MODE, &ival)) {
 		DBG("%s: " RILCONF_LTE_MODE " %d", group, ival);
@@ -2223,7 +2223,6 @@ static guint ril_plugin_slot_driver_start(RilPlugin *plugin)
 	ofono_modem_driver_register(&ril_modem_driver);
 	ofono_sim_driver_register(&ril_sim_driver);
 	ofono_sms_driver_register(&ril_sms_driver);
-	ofono_netmon_driver_register(&ril_netmon_driver);
 	ofono_netreg_driver_register(&ril_netreg_driver);
 	ofono_devinfo_driver_register(&ril_devinfo_driver);
 	ofono_voicecall_driver_register(&ril_voicecall_driver);
@@ -2398,7 +2397,6 @@ static void ril_plugin_exit(void)
 	ofono_sim_driver_unregister(&ril_sim_driver);
 	ofono_sms_driver_unregister(&ril_sms_driver);
 	ofono_devinfo_driver_unregister(&ril_devinfo_driver);
-	ofono_netmon_driver_unregister(&ril_netmon_driver);
 	ofono_netreg_driver_unregister(&ril_netreg_driver);
 	ofono_voicecall_driver_unregister(&ril_voicecall_driver);
 	ofono_call_barring_driver_unregister(&ril_call_barring_driver);

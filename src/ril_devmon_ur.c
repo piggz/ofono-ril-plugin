@@ -61,7 +61,7 @@ typedef struct ril_devmon_ur {
 
 typedef struct ril_devmon_ur_io {
 	struct ril_devmon_io pub;
-	struct ofono_cell_info *cell_info;
+	struct ofono_slot *slot;
 	MceBattery *battery;
 	MceCharger *charger;
 	MceDisplay *display;
@@ -137,7 +137,7 @@ static void ril_devmon_ur_io_set_unsol_response_filter(DevMonIo *self)
 
 static void ril_devmon_ur_io_set_cell_info_update_interval(DevMonIo *self)
 {
-	ofono_cell_info_set_update_interval(self->cell_info,
+	ofono_slot_set_cell_info_update_interval(self->slot, self,
 		(self->display_on && (ril_devmon_ur_charging(self->charger) ||
 				ril_devmon_ur_battery_ok(self->battery))) ?
 					self->cell_info_interval_short_ms :
@@ -182,12 +182,13 @@ static void ril_devmon_ur_io_free(struct ril_devmon_io *devmon_io)
 	grilio_channel_cancel_request(self->io, self->req_id, FALSE);
 	grilio_channel_unref(self->io);
 
-	ofono_cell_info_unref(self->cell_info);
+	ofono_slot_drop_cell_info_requests(self->slot, self);
+	ofono_slot_unref(self->slot);
 	g_free(self);
 }
 
 static struct ril_devmon_io *ril_devmon_ur_start_io(struct ril_devmon *devmon,
-		GRilIoChannel *io, struct ofono_cell_info *cell_info)
+		GRilIoChannel *io, struct ofono_slot *slot)
 {
 	DevMon *ur = ril_devmon_ur_cast(devmon);
 	DevMonIo *self = g_new0(DevMonIo, 1);
@@ -195,7 +196,7 @@ static struct ril_devmon_io *ril_devmon_ur_start_io(struct ril_devmon *devmon,
 	self->pub.free = ril_devmon_ur_io_free;
 	self->unsol_filter_supported = TRUE;
 	self->io = grilio_channel_ref(io);
-	self->cell_info = ofono_cell_info_ref(cell_info);
+	self->slot = ofono_slot_ref(slot);
 
 	self->battery = mce_battery_ref(ur->battery);
 	self->battery_event_id[BATTERY_EVENT_VALID] =
