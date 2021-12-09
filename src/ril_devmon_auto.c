@@ -31,28 +31,28 @@ static inline DevMon *ril_devmon_auto_cast(struct ril_devmon *pub)
 }
 
 static struct ril_devmon_io *ril_devmon_auto_start_io(struct ril_devmon *devmon,
-		GRilIoChannel *io, struct ofono_cell_info *cell_info)
+		GRilIoChannel *io, struct ofono_slot *slot)
 {
 	DevMon *self = ril_devmon_auto_cast(devmon);
 
 	if (!self->ss) {
 		/* We have already chosen SEND_DEVICE_STATE method */
-		return ril_devmon_start_io(self->ds, io, cell_info);
+		return ril_devmon_start_io(self->ds, io, slot);
 	} else if (!self->ds) {
 		/* We have already chosen SCREEN_STATE method */
-		return ril_devmon_start_io(self->ss, io, cell_info);
+		return ril_devmon_start_io(self->ss, io, slot);
 	} else if (io->ril_version > 14 /* Covers binder implementation */) {
 		/* Choose SEND_DEVICE_STATE method */
 		DBG("%s: Will use SEND_DEVICE_STATE method", io->name);
 		ril_devmon_free(self->ss);
 		self->ss = NULL;
-		return ril_devmon_start_io(self->ds, io, cell_info);
+		return ril_devmon_start_io(self->ds, io, slot);
 	} else {
 		/* Choose legacy SCREEN_STATE method */
 		DBG("%s: Will use SCREEN_STATE method", io->name);
 		ril_devmon_free(self->ds);
 		self->ds = NULL;
-		return ril_devmon_start_io(self->ss, io, cell_info);
+		return ril_devmon_start_io(self->ss, io, slot);
 	}
 }
 

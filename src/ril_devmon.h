@@ -19,7 +19,7 @@
 
 #include "ril_types.h"
 
-#include <ofono/cell-info.h>
+#include <ofono/slot.h>
 
 /*
  * Separate instance of ril_devmon is created for each modem.
@@ -33,7 +33,7 @@ struct ril_devmon_io {
 struct ril_devmon {
 	void (*free)(struct ril_devmon *devmon);
 	struct ril_devmon_io *(*start_io)(struct ril_devmon *devmon,
-		GRilIoChannel *channel, struct ofono_cell_info *cell_info);
+		GRilIoChannel *channel, struct ofono_slot *slot);
 };
 
 /*
@@ -67,7 +67,7 @@ struct ril_devmon *ril_devmon_combine(struct ril_devmon *devmon[], guint n);
 
 /* Utilities (NULL tolerant) */
 struct ril_devmon_io *ril_devmon_start_io(struct ril_devmon *devmon,
-		GRilIoChannel *channel, struct ofono_cell_info *cell_info);
+		GRilIoChannel *channel, struct ofono_slot *slot);
 void ril_devmon_io_free(struct ril_devmon_io *devmon_io);
 void ril_devmon_free(struct ril_devmon *devmon);
 

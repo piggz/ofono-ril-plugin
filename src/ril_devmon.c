@@ -16,9 +16,9 @@
 #include "ril_devmon.h"
 
 struct ril_devmon_io *ril_devmon_start_io(struct ril_devmon *devmon,
-		GRilIoChannel *channel, struct ofono_cell_info *cell_info)
+		GRilIoChannel *channel, struct ofono_slot *slot)
 {
-	return devmon ? devmon->start_io(devmon, channel, cell_info) : NULL;
+	return devmon ? devmon->start_io(devmon, channel, slot) : NULL;
 }
 
 void ril_devmon_io_free(struct ril_devmon_io *devmon_io)

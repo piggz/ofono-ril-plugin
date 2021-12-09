@@ -35,7 +35,6 @@
 #include <ofono/stk.h>
 #include <ofono/ussd.h>
 #include <ofono/voicecall.h>
-#include <ofono/netmon.h>
 
 #include <grilio_queue.h>
 #include <grilio_request.h>
@@ -100,7 +99,6 @@ extern const struct ofono_sms_driver ril_sms_driver;
 extern const struct ofono_stk_driver ril_stk_driver;
 extern const struct ofono_ussd_driver ril_ussd_driver;
 extern const struct ofono_voicecall_driver ril_voicecall_driver;
-extern const struct ofono_netmon_driver ril_netmon_driver;
 
 #endif /* RIL_PLUGIN_H */
 

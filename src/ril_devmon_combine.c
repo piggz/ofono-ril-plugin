@@ -52,7 +52,7 @@ static void ril_devmon_combine_io_free(struct ril_devmon_io *io)
 }
 
 static struct ril_devmon_io *ril_devmon_combine_start_io(struct ril_devmon *dm,
-			GRilIoChannel *chan, struct ofono_cell_info *ci)
+			GRilIoChannel *chan, struct ofono_slot *slot)
 {
 	guint i;
 	DevMon *self = ril_devmon_combine_cast(dm);
@@ -63,7 +63,7 @@ static struct ril_devmon_io *ril_devmon_combine_start_io(struct ril_devmon *dm,
 	io->impl = (struct ril_devmon_io**)(io + 1);
 	io->count = self->count;
 	for (i = 0; i < io->count; i++) {
-		io->impl[i] = ril_devmon_start_io(self->impl[i], chan, ci);
+		io->impl[i] = ril_devmon_start_io(self->impl[i], chan, slot);
 	}
 	return &io->pub;
 }

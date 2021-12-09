@@ -25,6 +25,7 @@
 #include "ril_util.h"
 #include "ril_log.h"
 
+#include <ofono/netmon.h>
 #include <ofono/message-waiting.h>
 #include <ofono/phonebook.h>
 #include <ofono/cell-info.h>
@@ -340,7 +341,7 @@ static void ril_modem_post_online(struct ofono_modem *modem)
 	ofono_netreg_create(modem, 0, RILMODEM_DRIVER, md);
 	ofono_ussd_create(modem, 0, RILMODEM_DRIVER, md);
 	ofono_call_settings_create(modem, 0, RILMODEM_DRIVER, md);
-	ofono_netmon_create(modem, 0, RILMODEM_DRIVER, md);
+	ofono_netmon_create(modem, 0, "cellinfo", modem);
 }
 
 static void ril_modem_set_online(struct ofono_modem *modem, ofono_bool_t online,

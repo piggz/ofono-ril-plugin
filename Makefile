@@ -55,7 +55,6 @@ SRC = \
   ril_gprs.c \
   ril_gprs_context.c \
   ril_modem.c \
-  ril_netmon.c \
   ril_netreg.c \
   ril_network.c \
   ril_oem_raw.c \
