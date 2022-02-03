@@ -580,17 +580,43 @@ static void ril_voicecall_submit_hangup_req(struct ofono_voicecall *vc,
 			int id, struct ril_voicecall_request_data *req)
 {
 	struct ril_voicecall *vd = ril_voicecall_get_data(vc);
-	GRilIoRequest *ioreq = grilio_request_array_int32_new(1, id);
+	GRilIoRequest *ioreq;
+	GSList *l;
+	struct ofono_call *call = NULL;
+	guint code;
 
 	/* Append the call id to the list of calls being released locally */
 	GASSERT(!gutil_int_array_contains(vd->local_release_ids, id));
 	gutil_int_array_append(vd->local_release_ids, id);
 
+	/* Look for call with id to get its status. */
+	for (l = vd->calls; l; l = l->next) {
+		call = l->data;
+		if (call->id == id)
+			break;
+		call = NULL;
+	}
+	/* Need to use this request so that declined
+	 * calls in this state, are properly forwarded
+	 * to voicemail.  REQUEST_HANGUP doesn't do the
+	 * right thing for some operators, causing the
+	 * caller to hear a fast busy signal or even not
+	 * hanging up the call, which rings again after
+	 * some seconds.
+	 */
+	if (call && call->status == OFONO_CALL_STATUS_INCOMING) {
+		code = RIL_REQUEST_HANGUP_WAITING_OR_BACKGROUND;
+		ioreq = grilio_request_new();
+	} else {
+		code = RIL_REQUEST_HANGUP;
+		ioreq = grilio_request_array_int32_new(1, id);
+	}
+
 	/* Send request to RIL. ril_voicecall_request_data_free will unref
 	 * the request data */
 	req->ref_count++;
 	req->pending_call_count++;
-	grilio_queue_send_request_full(vd->q, ioreq, RIL_REQUEST_HANGUP,
+	grilio_queue_send_request_full(vd->q, ioreq, code,
 				ril_voicecall_request_cb,
 				ril_voicecall_request_data_free, req);
 	grilio_request_unref(ioreq);
