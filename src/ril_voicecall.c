@@ -1,7 +1,7 @@
 /*
  *  oFono - Open Source Telephony - RIL-based devices
  *
- *  Copyright (C) 2015-2021 Jolla Ltd.
+ *  Copyright (C) 2015-2022 Jolla Ltd.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -33,7 +33,7 @@ enum ril_voicecall_events {
 	VOICECALL_EVENT_CALL_STATE_CHANGED,
 	VOICECALL_EVENT_SUPP_SVC_NOTIFICATION,
 	VOICECALL_EVENT_RINGBACK_TONE,
-	VOICECALL_EVENT_COUNT,
+	VOICECALL_EVENT_COUNT
 };
 
 struct ril_voicecall {
@@ -582,7 +582,7 @@ static void ril_voicecall_submit_hangup_req(struct ofono_voicecall *vc,
 	struct ril_voicecall *vd = ril_voicecall_get_data(vc);
 	GRilIoRequest *ioreq;
 	GSList *l;
-	struct ofono_call *call = NULL;
+	const struct ofono_call *call = NULL;
 	guint code;
 
 	/* Append the call id to the list of calls being released locally */
@@ -591,12 +591,16 @@ static void ril_voicecall_submit_hangup_req(struct ofono_voicecall *vc,
 
 	/* Look for call with id to get its status. */
 	for (l = vd->calls; l; l = l->next) {
-		call = l->data;
-		if (call->id == id)
+		const struct ofono_call *oc = l->data;
+
+		if (oc->id == id) {
+			call = oc;
 			break;
-		call = NULL;
+		}
 	}
-	/* Need to use this request so that declined
+
+	/*
+	 * Need to use this request so that declined
 	 * calls in this state, are properly forwarded
 	 * to voicemail.  REQUEST_HANGUP doesn't do the
 	 * right thing for some operators, causing the
